@@ -18,7 +18,7 @@ Sample assignments on first visit are demo content. They are replaced when the f
 
 ## Features
 
-- PDF, PNG, and JPEG uploads (10 MB maximum), including scanned-PDF rendering for up to five document pages.
+- PDF, PNG, and JPEG uploads (4 MB maximum), including scanned-PDF rendering for up to five document pages. The cap stays below Vercel Functions’ 4.5 MB request-body limit, which includes multipart overhead.
 - Muse Spark structured extraction for assignments, dates, requirements, estimated effort, dependencies, missing information, and subtasks.
 - Review queue with editable title, deadline, description, requirements, and effort; approve, reject, or approve high-confidence dates whose exact quote and date match selectable PDF text.
 - Evidence badges distinguish a quote matched to selectable text, image-derived information requiring manual review, and no deadline found. Matched excerpts show their PDF page number.
@@ -101,7 +101,12 @@ No checked-in screenshots are included yet. Capture the real review flow and app
 
 ## Deployment
 
-Render and Vercel scaffolding is present in `render.yaml`, `backend/Dockerfile`, and `frontend/vercel.json`. The app is **not deployed**. For Render, set `MODEL_API_KEY` and `CORS_ORIGINS` in the service environment. For Vercel, set `VITE_API_URL` to the deployed backend and use `frontend/` as the project root. Verify the public endpoint and protect it from unbounded use before sharing a URL.
+Deploy the app as two Vercel projects from this GitHub repository:
+
+1. **Frontend:** import the repository and set the project root to `frontend/`. Vercel detects Vite; set `VITE_API_URL` to the API deployment URL in the Production environment (and Preview if preview builds should call the production API).
+2. **API:** import the same repository as a second project and set the project root to `backend/`. Vercel detects FastAPI from `main.py` and `requirements.txt`. Set `MODEL_API_KEY` as a server-side secret and `CORS_ORIGINS` to the exact frontend origin(s). Never prefix the model key with `VITE_`.
+
+The API upload cap is 4 MB because Vercel Functions reject request bodies above 4.5 MB, including multipart overhead. Render deployment scaffolding remains available in `render.yaml` and `backend/Dockerfile` if you prefer to host the API separately; set `MODEL_API_KEY`, `CORS_ORIGINS`, and the frontend’s `VITE_API_URL` there. Verify the production URL and protect the public upload endpoint from unbounded use before sharing it.
 
 ## Demo
 

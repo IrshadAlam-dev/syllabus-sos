@@ -5,7 +5,7 @@
 | Layer | Responsibility |
 | --- | --- |
 | React/Vite frontend | Uploads documents, presents the review queue, stores approved plan state, renders calendar/workload views, preferences, and Focus Mode. |
-| FastAPI `/api/analyze` | Checks MIME type, byte signature, and 10 MB limit; extracts PDF text or renders scanned pages; calls Muse Spark; validates structured response and deadline evidence. |
+| FastAPI `/api/analyze` | Checks MIME type, byte signature, and 4 MB limit; extracts PDF text or renders scanned pages; calls Muse Spark; validates structured response and deadline evidence. |
 | FastAPI `/api/plan` | Sorts approved assignments and returns a bounded list of incomplete subtasks for the daily-plan panel. |
 | PyMuPDF | Extracts selectable text page by page and renders scanned pages (bounded to the first five document pages without text). |
 | Meta Model API | Muse Spark 1.3 interprets document content and returns JSON constrained by the app’s assignment schema. Requests use Bearer authentication and `store: false`. |
@@ -15,7 +15,7 @@
 
 ```mermaid
 flowchart TD
-  A[Student selects PDF, PNG, or JPG] --> B[FastAPI validates type, signature, and 10 MB limit]
+  A[Student selects PDF, PNG, or JPG] --> B[FastAPI validates type, signature, and 4 MB limit]
   B --> C{PDF page has selectable text?}
   C -->|Yes| D[Extract text and label each page]
   C -->|No| E[Render page image, bounded by five document pages]
@@ -56,6 +56,7 @@ Health: `GET /api/health`. The health response indicates whether `MODEL_API_KEY`
 ## Failure behavior
 
 - Unsupported content, mismatched signatures, malformed PDFs, and oversized uploads return client-visible HTTP errors.
+- The 4 MB upload cap stays below Vercel Functions’ 4.5 MB request-body limit, which includes multipart framing.
 - Missing API credentials return HTTP 503.
 - Network errors, transient 408/429/5xx responses, malformed JSON, schema mismatch, and other API errors produce a bounded retry or explicit gateway error. No mock result is substituted.
 - The API key is read only from the backend environment; it is never placed in Vite environment values or logged.

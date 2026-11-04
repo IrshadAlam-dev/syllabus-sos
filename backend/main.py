@@ -14,7 +14,9 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ValidationError
 
-MAX_BYTES = 10 * 1024 * 1024
+# Vercel Functions reject request bodies above 4.5 MB, including multipart
+# framing. Keep the file cap below that platform limit.
+MAX_BYTES = 4 * 1024 * 1024
 MAX_SCANNED_PDF_PAGES = 5
 MAX_SCANNED_PAGE_PIXELS = 1600
 ALLOWED = {"application/pdf", "image/png", "image/jpeg"}
@@ -269,7 +271,7 @@ async def analyze(file: UploadFile = File(...)):
         raise HTTPException(415, "Upload a PDF, PNG, or JPG image.")
     data = await file.read(MAX_BYTES + 1)
     if len(data) > MAX_BYTES:
-        raise HTTPException(413, "File is larger than the 10 MB limit.")
+        raise HTTPException(413, "File is larger than the 4 MB limit.")
     signatures = {
         "application/pdf": data.startswith(b"%PDF-"),
         "image/png": data.startswith(b"\x89PNG\r\n\x1a\n"),
