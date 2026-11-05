@@ -110,6 +110,8 @@ The API upload cap is 4 MB because Vercel Functions reject request bodies above 
 
 ## Demo
 
+Try the [live application](https://syllabus-sos.vercel.app) or watch the [demo video on YouTube](https://youtu.be/cCQiEG6IxEc).
+
 Use [DEMO_SCRIPT.md](DEMO_SCRIPT.md) for the 90-second walkthrough. Use [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) to track what is and is not verified.
 
 ## Known limitations
