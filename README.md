@@ -70,6 +70,5 @@ Uploaded documents are sent to Meta Model API for analysis and are not saved by 
 ## More project details
 
 - [Architecture](ARCHITECTURE.md)
-- [Demo walkthrough](DEMO_SCRIPT.md)
 - [Submission checklist](SUBMISSION_CHECKLIST.md)
 - [MIT License](LICENSE)
