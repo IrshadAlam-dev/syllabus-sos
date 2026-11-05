@@ -19,7 +19,7 @@ Updated: November 3, 2026.
 
 - [x] README includes setup, API environment, data flow, limitations, testing, privacy, and deployment steps.
 - [x] Architecture diagram and component boundaries documented in `ARCHITECTURE.md`.
-- [x] 90-second demo script prepared in `DEMO_SCRIPT.md`.
+- [x] Demo video published on YouTube.
 - [x] Technical audit documented in `TECHNICAL_AUDIT.md`.
 - [ ] Screenshot assets captured and checked into the project. None are currently included.
 - [ ] Demo video recorded. None is currently included.
